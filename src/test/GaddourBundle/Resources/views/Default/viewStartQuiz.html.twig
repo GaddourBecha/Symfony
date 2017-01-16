@@ -1,0 +1,66 @@
+
+
+
+
+
+
+
+
+{% extends "testGaddourBundle::layout.html.twig" %}
+
+  {% block menu %}
+
+      {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+          <li><a href="{{ path('fos_user_profile_show')}}">Profile</a></li>
+          <li><a href="{{ path('fos_user_profile_edit')}}">Edit Profile</a></li>
+          <li><a href="{{ path('fos_user_profile_addQuiz')}}">Add Quiz</a></li>
+          <li><a href="{{ path('test_gaddour_contact')}}">Contact</a></li>
+          <li><a href="{{ path('fos_user_security_logout') }}">Logout</a></li>
+      {% else %}
+
+          <li><a href="{{ path('test_gaddour_homepage')}}">Home</a></li>
+          <li><a href="{{ path('fos_user_registration_register')}}">Subscribe</a></li>
+          <li class="active"><a href="{{ path('test_gaddour_etudiant')}}">Student</a></li>
+          <li><a href="{{ path('test_gaddour_contact')}}">Contact</a></li>
+          <li><a href="{{ path('fos_user_security_login') }}">Login</a></li>
+      {% endif %}
+  {% endblock %}
+
+
+
+{% block fos_user_content %}
+    <h2 class="page-header">{{ nameQuiz }}</h2>
+    <hr>
+    {% for question in listQuestion %}
+        <div class="well">
+
+            <ul> <h3 class="page header"> {{ question.contenuQuestion }}</h3>
+
+                <form action="">
+                {% for reponseQuestion in listReponse %}
+
+
+
+                    {% for reponse in reponseQuestion %}
+
+                        {% if reponse.idQuestion==question.id %}
+                            <ul>
+                                <ol>
+                                    <input type="radio" name="gender" value="male">    {{ reponse.contenuReponse }}
+                            <br>
+
+                                     </ol>  </ul>  <hr>
+                        {% endif %}
+
+
+                    {% endfor %}
+                </form>
+
+
+                    </ol>
+
+                {% endfor %}
+
+            </ul> </div>
+    {% endfor %}
+{% endblock fos_user_content %}
