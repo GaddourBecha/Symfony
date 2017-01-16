@@ -1,0 +1,31 @@
+
+
+{% extends "testGaddourBundle::layout.html.twig" %}
+
+{% block loginout %}
+
+    <li><a href="{{ path('fos_user_security_login')}}"><span class="glyphicon glyphicon-log-in active"></span> Login  </a></li>
+
+{% endblock %}
+
+
+  {% block menu %}
+
+
+
+
+      <li><a href="{{ path('test_gaddour_homepage')}}">Home</a></li>
+      <li><a href="{{ path('test_gaddour_inscrit')}}">Subscribe</a></li>
+      <li><a href="{{ path('test_gaddour_etudiant')}}">Student</a></li>
+      <li><a href="{{ path('test_gaddour_contact')}}">Contact</a></li>
+
+
+
+
+  {% endblock %}
+
+
+
+{% block body %}
+   <h1 class="page-header">formulaire login</h1>
+{% endblock %}

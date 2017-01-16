@@ -1,0 +1,21 @@
+test_gaddour_homepage:
+    path:     /
+    defaults: { _controller: testGaddourBundle:Default:index }
+
+
+test_gaddour_inscrit:
+    path:     /subscribe
+    defaults: { _controller: testGaddourBundle:Default:inscrit }
+
+
+
+test_gaddour_etudiant:
+    path:     /student
+    defaults: { _controller: testGaddourBundle:Default:etudiant }
+
+
+
+test_gaddour_contact:
+    path:     /contact
+    defaults: { _controller: testGaddourBundle:Default:contact }
+
