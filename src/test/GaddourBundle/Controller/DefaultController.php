@@ -26,15 +26,60 @@ class DefaultController extends Controller
     }
 
 
-    public function loginAction()
+
+
+
+    public function tryQuizAction($id,$idEtudiant)
     {
-        return $this->render('testGaddourBundle:Default:login.html.twig');
+
+
+        $actualQuiz= $this->getDoctrine()->getRepository('testGaddourBundle:Quiz')->find($id);
+
+        $listQuestion=$this->getDoctrine()->getRepository('testGaddourBundle:Question')->findBy(array('idQuiz'=>$id));
+        $listReponse=array();
+        foreach ($listQuestion as $question)
+        {
+            $listReponseQuestion= $this->getDoctrine()->getRepository('testGaddourBundle:reponse')->findBy(array('idQuestion'=>$question->getId()));
+            array_push($listReponse,$listReponseQuestion);
+        }
+
+
+        return $this->render('testGaddourBundle:Default:viewStartQuiz.html.twig', array(
+            'nameQuiz' => $actualQuiz->getContenuQuiz(),
+            'listQuestion'=>$listQuestion,
+            'listReponse'=>$listReponse
+ ));
+
+
+
+
+
+
+
+
+
+
     }
 
 
-    public function inscritAction()
+
+
+
+
+
+    public function startQuizAction($id,$idProf)
     {
-        return $this->render('testGaddourBundle:Default:inscrit.html.twig');
+
+        $em = $this->getDoctrine()->getManager();
+
+        $actualQuiz = $em->getRepository('testGaddourBundle:Quiz')->findBy(array(
+            'idProf' => $idProf
+        ));
+
+        return $this->render('testGaddourBundle:Default:startQuiz.html.twig',array(
+            'idEtudiant'=> $id,
+            'quizzes'=>$actualQuiz
+        ));
     }
 
 
@@ -69,7 +114,8 @@ class DefaultController extends Controller
             ));
 
 
-            if (sizeof($actualQuiz) != 0) {
+            if ($actualQuiz) {
+
                 $name = $form['nom']->getData();
                 $etudiant = new Etudiant();
 
@@ -78,9 +124,20 @@ class DefaultController extends Controller
                 $em->persist($etudiant);
                 $em->flush();
 
+                $response = $this->forward('testGaddourBundle:Default:startQuiz', array(
+                    'id'  => $etudiant->getId(),
+                    'idProf'  => $form['IdProf']->getData()
+                ));
+                return $response;
+
+
 
             } else {
-                echo "No room found";
+                return $this->render('testGaddourBundle:Default:etudiant.html.twig',
+                    array(
+                        'form'=>$form->createView(),
+                        'msg' =>'No Room Found with this number'
+                    ));
 
             }
 
@@ -88,7 +145,8 @@ class DefaultController extends Controller
         }
     return $this->render('testGaddourBundle:Default:etudiant.html.twig',
                 array(
-                    'form'=>$form->createView()
+                    'form'=>$form->createView(),
+                    'msg' =>null
                 ));
 
 
@@ -179,6 +237,33 @@ class DefaultController extends Controller
 
         return $this->render('testGaddourBundle:Default:index.html.twig');
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
